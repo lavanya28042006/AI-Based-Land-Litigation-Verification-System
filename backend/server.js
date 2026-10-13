@@ -6,6 +6,7 @@ const db = require("./db");
 const fetch = require("node-fetch");
 const path = require("path");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const app = express();
 
@@ -99,14 +100,16 @@ app.post("/api/login", (req, res) => {
         });
     }
 
+    const trimmedIdentifier = username.trim();
+
     const query = `
-        SELECT id, username, password, role
+        SELECT id, username, email, password, role
         FROM users
-        WHERE username = ? AND password = ?
+        WHERE username = ? OR email = ?
         LIMIT 1
     `;
 
-    db.query(query, [username, password], (err, results) => {
+    db.query(query, [trimmedIdentifier, trimmedIdentifier], async (err, results) => {
         if (err) {
             console.error("Login database error:", err);
 
@@ -124,38 +127,89 @@ app.post("/api/login", (req, res) => {
         }
 
         const user = results[0];
-        const token = jwt.sign(
-        {
-        id: user.id,
-        username: user.username,
-        role: user.role
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: "2h" }
-    );
-        return res.json({
-            success: true,
-            message: "Login successful",
-            token,
-        user: {
-            id: user.id,
-            username: user.username,
-            role: user.role
+
+        try {
+            let isMatch = false;
+
+            // Check if stored password is a bcrypt hash
+            if (user.password && (user.password.startsWith("$2a$") || user.password.startsWith("$2b$") || user.password.startsWith("$2y$"))) {
+                isMatch = await bcrypt.compare(password, user.password);
+            } else {
+                // Fallback for legacy plaintext passwords
+                isMatch = (user.password === password);
+                if (isMatch) {
+                    // Transparently upgrade legacy plaintext password to bcrypt hash
+                    const upgradedHash = await bcrypt.hash(password, 10);
+                    db.query("UPDATE users SET password = ? WHERE id = ?", [upgradedHash, user.id], (upgradeErr) => {
+                        if (upgradeErr) console.error("Transparent password upgrade error:", upgradeErr);
+                    });
+                }
+            }
+
+            if (!isMatch) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Invalid username or password"
+                });
+            }
+
+            const token = jwt.sign(
+                {
+                    id: user.id,
+                    username: user.username,
+                    role: user.role
+                },
+                process.env.JWT_SECRET,
+                { expiresIn: "2h" }
+            );
+
+            return res.json({
+                success: true,
+                message: "Login successful",
+                token,
+                user: {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email,
+                    role: user.role
+                }
+            });
+        } catch (verifyError) {
+            console.error("Password verification error:", verifyError);
+            return res.status(500).json({
+                success: false,
+                message: "Server error during password verification"
+            });
         }
-        });
     });
 });
 
 
-app.post("/api/register", (req, res) => {
+app.post("/api/register", async (req, res) => {
+    const { username, email, password, securityQuestion, securityAnswer } = req.body;
 
-    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.status(400).json({
+            success: false,
+            message: "Username and password are required"
+        });
+    }
 
-    const checkQuery = "SELECT * FROM users WHERE username = ?";
+    const trimmedUsername = username.trim();
+    const resolvedEmail = (email && email.trim()) || (trimmedUsername.includes("@") ? trimmedUsername : null);
 
-    db.query(checkQuery, [username], (err, result) => {
+    if (password.length < 6) {
+        return res.status(400).json({
+            success: false,
+            message: "Password must be at least 6 characters long"
+        });
+    }
 
+    const checkQuery = "SELECT id FROM users WHERE username = ? OR (email IS NOT NULL AND email = ?) LIMIT 1";
+
+    db.query(checkQuery, [trimmedUsername, resolvedEmail], async (err, result) => {
         if (err) {
+            console.error("Register check query error:", err);
             return res.status(500).json({ message: "Database Error" });
         }
 
@@ -166,26 +220,189 @@ app.post("/api/register", (req, res) => {
             });
         }
 
-        const insertQuery =
-            "INSERT INTO users (username, password) VALUES (?, ?)";
+        try {
+            // Hash password before saving
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const secQuestion = (securityQuestion && securityQuestion.trim()) || "What is your registered 4-digit PIN?";
+            const secAnswer = (securityAnswer && securityAnswer.trim()) || "1234";
 
-        db.query(insertQuery, [username, password], (err) => {
+            const insertQuery = `
+                INSERT INTO users (username, email, password, security_question, security_answer, role)
+                VALUES (?, ?, ?, ?, ?, 'USER')
+            `;
 
-            if (err) {
-                return res.status(500).json({
-                    message: "Registration Failed"
+            db.query(insertQuery, [trimmedUsername, resolvedEmail, hashedPassword, secQuestion, secAnswer], (insertErr) => {
+                if (insertErr) {
+                    console.error("Register insert error:", insertErr);
+                    return res.status(500).json({
+                        success: false,
+                        message: "Registration Failed"
+                    });
+                }
+
+                return res.json({
+                    success: true,
+                    message: "Registration Successful"
+                });
+            });
+        } catch (hashError) {
+            console.error("Register hash error:", hashError);
+            return res.status(500).json({
+                success: false,
+                message: "Error processing registration"
+            });
+        }
+    });
+});
+
+
+app.post("/api/forgot-password/security-question", (req, res) => {
+    const { email } = req.body;
+
+    if (!email || !email.trim()) {
+        return res.status(400).json({
+            success: false,
+            message: "Email address is required"
+        });
+    }
+
+    const trimmedEmail = email.trim();
+
+    const query = `
+        SELECT id, username, email, security_question
+        FROM users
+        WHERE email = ? OR username = ?
+        LIMIT 1
+    `;
+
+    db.query(query, [trimmedEmail, trimmedEmail], (err, results) => {
+        if (err) {
+            console.error("Fetch security question error:", err);
+            return res.status(500).json({
+                success: false,
+                message: "Server error checking email"
+            });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No account found with this email address"
+            });
+        }
+
+        const user = results[0];
+        return res.json({
+            success: true,
+            securityQuestion: user.security_question || "What is your registered 4-digit PIN?"
+        });
+    });
+});
+
+
+app.post("/api/forgot-password", async (req, res) => {
+    const { email, securityAnswer, newPassword, confirmPassword } = req.body;
+
+    if (!email || !securityAnswer || !newPassword || !confirmPassword) {
+        return res.status(400).json({
+            success: false,
+            message: "All fields are required"
+        });
+    }
+
+    const trimmedEmail = email.trim();
+    const trimmedAnswer = securityAnswer.trim().toLowerCase();
+
+    if (newPassword.length < 6) {
+        return res.status(400).json({
+            success: false,
+            message: "Password must be at least 6 characters long"
+        });
+    }
+
+    if (newPassword !== confirmPassword) {
+        return res.status(400).json({
+            success: false,
+            message: "New password and Confirm password do not match"
+        });
+    }
+
+    const query = `
+        SELECT id, username, email, password, security_answer
+        FROM users
+        WHERE email = ? OR username = ?
+        LIMIT 1
+    `;
+
+    db.query(query, [trimmedEmail, trimmedEmail], async (err, results) => {
+        if (err) {
+            console.error("Forgot password database error:", err);
+            return res.status(500).json({
+                success: false,
+                message: "Server error during password reset"
+            });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No account found with this email address"
+            });
+        }
+
+        const user = results[0];
+        const storedAnswer = (user.security_answer || "").trim().toLowerCase();
+
+        // Security requirement: Identity verification step
+        if (!storedAnswer || storedAnswer !== trimmedAnswer) {
+            return res.status(401).json({
+                success: false,
+                message: "Identity verification failed: Incorrect security answer or PIN"
+            });
+        }
+
+        try {
+            // Prevent reusing current password
+            let isSamePassword = false;
+            if (user.password && (user.password.startsWith("$2a$") || user.password.startsWith("$2b$") || user.password.startsWith("$2y$"))) {
+                isSamePassword = await bcrypt.compare(newPassword, user.password);
+            } else {
+                isSamePassword = (user.password === newPassword);
+            }
+
+            if (isSamePassword) {
+                return res.status(400).json({
+                    success: false,
+                    message: "New password cannot be the same as your old password"
                 });
             }
 
-            res.json({
-                success: true,
-                message: "Registration Successful"
+            // Hash new password using bcrypt
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+            const updateQuery = "UPDATE users SET password = ? WHERE id = ?";
+            db.query(updateQuery, [hashedPassword, user.id], (updateErr) => {
+                if (updateErr) {
+                    console.error("Update password error:", updateErr);
+                    return res.status(500).json({
+                        success: false,
+                        message: "Failed to update password in database"
+                    });
+                }
+
+                return res.json({
+                    success: true,
+                    message: "Password updated successfully! You can now log in with your new password."
+                });
             });
-
-        });
-
+        } catch (hashError) {
+            console.error("Password hash error:", hashError);
+            return res.status(500).json({
+                success: false,
+                message: "Server error processing new password"
+            });
+        }
     });
-
 });
 
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register</title>
+<title>Register - AI Land Litigation Verification</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -15,17 +15,19 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
     margin:0;
+    padding:20px;
 }
 
 .container{
-    width:350px;
+    width:380px;
     background:rgba(255,255,255,0.08);
     padding:30px;
     border-radius:20px;
     backdrop-filter:blur(10px);
     color:white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 h2{
@@ -33,13 +35,30 @@ h2{
     margin-bottom:20px;
 }
 
-input{
+input, select{
     width:100%;
     padding:14px;
     margin-top:10px;
     border:none;
     border-radius:10px;
     outline:none;
+    box-sizing:border-box;
+    font-family:Inter,sans-serif;
+    font-size:14px;
+}
+
+select {
+    background: #ffffff;
+    color: #333333;
+    cursor: pointer;
+}
+
+.label-hint {
+    display: block;
+    font-size: 12px;
+    color: #90cdf4;
+    margin-top: 12px;
+    margin-bottom: -4px;
 }
 
 button{
@@ -52,6 +71,7 @@ button{
     color:white;
     font-size:16px;
     cursor:pointer;
+    transition: background 0.3s;
 }
 
 button:hover{
@@ -79,16 +99,26 @@ p{
 
 <form id="registerForm">
 
-<input type="email" id="email" placeholder="Email" required>
+<input type="email" id="email" placeholder="Email Address" required>
 
-<input type="password" id="password" placeholder="Password" required>
+<input type="password" id="password" placeholder="Password (min 6 characters)" minlength="6" required>
 
-<button type="submit">Register</button>
+<span class="label-hint">Recovery Identity Verification / அடையாளம் சரிபார்ப்பு:</span>
+<select id="securityQuestion" required>
+    <option value="What is your registered 4-digit PIN?">What is your registered 4-digit PIN?</option>
+    <option value="What was the name of your first school?">What was the name of your first school?</option>
+    <option value="What is your childhood nickname?">What is your childhood nickname?</option>
+    <option value="What is your favorite city?">What is your favorite city?</option>
+</select>
+
+<input type="text" id="securityAnswer" placeholder="Security Answer / PIN" required>
+
+<button type="submit" id="submitBtn">Register</button>
 
 </form>
 
 <p>
-Already have account?
+Already have an account?
 <a href="login.html">Login</a>
 </p>
 
@@ -101,35 +131,47 @@ document.getElementById("registerForm")
 
 e.preventDefault();
 
-const email = document.getElementById("email").value;
-
+const email = document.getElementById("email").value.trim();
 const password = document.getElementById("password").value;
+const securityQuestion = document.getElementById("securityQuestion").value;
+const securityAnswer = document.getElementById("securityAnswer").value.trim();
+const submitBtn = document.getElementById("submitBtn");
 
-fetch("http://localhost:5000/api/register", {
+if (password.length < 6) {
+    alert("Password must be at least 6 characters long");
+    return;
+}
 
+submitBtn.disabled = true;
+submitBtn.innerText = "Registering...";
+
+fetch("/api/register", {
     method: "POST",
-
     headers: {
         "Content-Type": "application/json"
     },
-
     body: JSON.stringify({
         username: email,
-        password: password
+        email: email,
+        password: password,
+        securityQuestion: securityQuestion,
+        securityAnswer: securityAnswer
     })
-
 })
 .then(res => res.json())
 .then(data => {
-
     alert(data.message);
-
     if (data.success) {
-
         window.location.href = "login.html";
-
     }
-
+})
+.catch(err => {
+    console.error("Register error:", err);
+    alert("Unable to register. Please check if backend server is running.");
+})
+.finally(() => {
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Register";
 });
 
 });
