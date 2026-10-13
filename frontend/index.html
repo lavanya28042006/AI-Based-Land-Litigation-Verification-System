@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Land Litigation Verification System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+    <script>
+        if (localStorage.getItem("loggedIn") !== "true") {
+              window.location.href = "login.html";
+    }
+    </script>
+
+    <header class="top-header">
+
+    <div class="header-left">
+
+        <img src="assets/logo.png" class="gov-logo">
+
+    </div>
+
+    <div class="header-center">
+
+        <h2>Government of Tamil Nadu</h2>
+
+        <p>
+            Land Litigation Verification System
+        </p>
+
+    </div>
+
+    </header>
+    <nav class="main-navbar">
+    <a href="index.html" class="brand-link"></a>
+
+    <div class="menu-container">
+        <button id="menuBtn" class="menu-btn"
+                type="button"
+                aria-label="Open navigation menu"
+                aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div id="menuDropdown" class="menu-dropdown">
+            <a href="index.html">🏠 Home / முகப்பு</a>
+            <a href="dashboard.html">▦ Dashboard / முகப்புப் பலகை</a>
+            <a href="search.html">🔍 Search Land / நிலத் தேடல்</a>
+            <a href="search-history.html">🕘 Search History / தேடல் வரலாறு</a>
+            <a href="about.html">ℹ️ About the App / செயலியைப் பற்றி</a>
+            <a href="admin.html" id="adminLink">⚙️ Admin / நிர்வாகம்</a>
+            <a href="login.html" id="loginLink">🔐 Login / உள்நுழைவு</a>
+            <a href="#" id="logoutLink" onclick="logout()">🚪 Logout / வெளியேறு</a>
+        </div>
+    </div>
+</nav>
+    <br>
+    <section class="hero">
+
+    <div class="hero-overlay">
+
+        <h4>
+            GOVERNMENT OF TAMIL NADU
+        </h4>
+
+        <h1>
+            Land Litigation Verification System
+        </h1>
+
+        <h2>
+            நில வழக்கு சரிபார்ப்பு அமைப்பு
+        </h2>
+
+        <p>
+            Verify Land Ownership, Court Case Details and AI Risk Analysis
+            <br><br>
+            நில உரிமை, நீதிமன்ற வழக்கு மற்றும் AI அபாய பகுப்பாய்வை
+            ஒரே இடத்தில் சரிபார்க்கலாம்.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="search.html" class="btn-primary">
+                🔍 Verify Land
+            </a>
+
+            <a href="#services" class="btn-secondary">
+                📖 Learn More
+            </a>
+
+        </div>
+
+    </div>
+
+    </section>
+
+    <section class="services" id="services">
+
+    <h2>Quick Services / விரைவு சேவைகள்</h2>
+
+    <div class="service-grid">
+
+        <a href="search.html" class="service-card">
+            <div class="icon">📄</div>
+            <h3>Land Verification</h3>
+            <p>நில சரிபார்ப்பு</p>
+        </a>
+
+        <a href="court-status.html" class="service-card">
+            <div class="icon">⚖️</div>
+            <h3>Court Case Status</h3>
+            <p>நீதிமன்ற வழக்கு நிலை</p>
+        </a>
+
+        <a href="ai-analysis.html" class="service-card">
+            <div class="icon">🤖</div>
+            <h3>AI Risk Analysis</h3>
+            <p>AI அபாய பகுப்பாய்வு</p>
+        </a>
+
+        <a href="download-report.html" class="service-card">
+            <div class="icon">📥</div>
+            <h3>Download Report</h3>
+            <p>அறிக்கை பதிவிறக்கம்</p>
+        </a>
+
+    </div>
+
+    </section>
+
+
+
+    <section class="about-section">
+
+    <img src="assets/about-land.png"
+         alt="About the Portal"
+         class="about-banner">
+
+    </section>
+
+
+    <section class="stats">
+
+    <h2>Portal Statistics / போர்டல் புள்ளிவிவரங்கள்</h2>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>5,000+</h3>
+            <p>Total Land Records<br>மொத்த நில பதிவுகள்</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>1,250+</h3>
+            <p>Court Cases Verified<br>சரிபார்க்கப்பட்ட வழக்குகள்</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>98%</h3>
+            <p>AI Accuracy<br>AI துல்லியம்</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>24 × 7</h3>
+            <p>Online Service<br>ஆன்லைன் சேவை</p>
+        </div>
+
+    </div>
+
+    </section>
+
+    <section class="updates">
+
+    <h2>Latest Government Updates / சமீபத்திய அரசு அறிவிப்புகள்</h2>
+
+    <p class="update-subtitle">
+        Latest announcements from the Government of Tamil Nadu
+        <br>
+        தமிழ்நாடு அரசின் சமீபத்திய அறிவிப்புகள்
+    </p>
+
+    <div class="update-list">
+
+        <div class="update-item">
+            📢 <b>New Land Verification Portal Released</b><br>
+            <span>புதிய நில சரிபார்ப்பு சேவை அறிமுகம்</span>
+        </div>
+
+        <div class="update-item">
+            📄 <b>Digital Patta & Chitta Services Available</b><br>
+            <span>டிஜிட்டல் பட்டா மற்றும் சிட்டா சேவைகள் கிடைக்கின்றன</span>
+        </div>
+
+        <div class="update-item">
+            ⚖️ <b>Court Case Status Verification Improved</b><br>
+            <span>நீதிமன்ற வழக்கு சரிபார்ப்பு மேம்படுத்தப்பட்டது</span>
+        </div>
+
+        <div class="update-item">
+            🤖 <b>AI Risk Analysis Feature Added</b><br>
+            <span>AI அபாய பகுப்பாய்வு வசதி சேர்க்கப்பட்டது</span>
+        </div>
+
+    </div>
+
+    </section>
+
+
+    <footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-col">
+            <h3>Government of Tamil Nadu</h3>
+            <p>Land Litigation Verification System</p>
+            <p>Secure • Transparent • Digital</p>
+        </div>
+
+        <div class="footer-col">
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="search.html">Search Land</a>
+            <a href="admin.html">Admin</a>
+        </div>
+
+        <div class="footer-col">
+            <h3>Contact</h3>
+            <p>📧 support@landverify.tn.gov.in</p>
+            <p>📞 +91 44 1234 5678</p>
+            <p>🕒 24 × 7 Online Service</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 Government of Tamil Nadu | Land Litigation Verification System
+    </div>
+
+    </footer>
+
+<script>
+const menuBtn = document.getElementById("menuBtn");
+const menuDropdown = document.getElementById("menuDropdown");
+
+if (menuBtn && menuDropdown) {
+    menuBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        menuDropdown.classList.toggle("show");
+
+        const isOpen = menuDropdown.classList.contains("show");
+        menuBtn.setAttribute("aria-expanded", isOpen);
+    });
+
+    document.addEventListener("click", function (event) {
+        if (
+            !menuDropdown.contains(event.target) &&
+            !menuBtn.contains(event.target)
+        ) {
+            menuDropdown.classList.remove("show");
+            menuBtn.setAttribute("aria-expanded", "false");
+        }
+    });
+}
+
+function updateMenuForLogin() {
+    const token = localStorage.getItem("token");
+    const loginLink = document.getElementById("loginLink");
+    const logoutLink = document.getElementById("logoutLink");
+    const adminLink = document.getElementById("adminLink");
+
+    const isLoggedIn = Boolean(token);
+
+    if (loginLink) {
+        loginLink.style.display = isLoggedIn ? "none" : "block";
+    }
+
+    if (logoutLink) {
+        logoutLink.style.display = isLoggedIn ? "block" : "none";
+    }
+
+    // Admin link: ADMIN role-ku mattum display
+    if (adminLink) {
+        adminLink.style.display =
+            isLoggedIn && localStorage.getItem("role") === "ADMIN"
+                ? "block"
+                : "none";
+    }
+}
+
+function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    localStorage.removeItem("loggedIn");
+
+    window.location.href = "index.html";
+}
+
+updateMenuForLogin();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Verification Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #0b2f55;
+            color: white;
+            padding: 22px 30px;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        nav {
+            background: #0756a5;
+            padding: 15px 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 22px;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 25px;
+        }
+
+        .welcome {
+            margin-bottom: 24px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #0000000d;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #64748b;
+        }
+
+        .number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #0756a5;
+            margin-bottom: 0;
+        }
+
+        button {
+            padding: 12px 18px;
+            margin: 5px 8px 5px 0;
+            border: none;
+            border-radius: 6px;
+            background: #0756a5;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #06417c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #eff6ff;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 15px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 5px 10px 5px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>LandVerify Dashboard</h1>
+        <p>AI-Powered Land Litigation Verification System</p>
+    </header>
+
+    
+<nav>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="search.html">Search Land</a>
+    <a href="search-history.html">Search History</a>
+    <a href="about.html">About the App</a>
+    <a href="index.html">Home</a>
+    <a href="#" onclick="logoutUser(); return false;">Logout</a>
+</nav>
+
+
+    <main>
+        <section class="welcome">
+            <h2 id="welcomeMessage">Welcome!</h2>
+            <p>Manage your land searches in one place.</p>
+
+            <button onclick="location.href='search.html'">
+                + Search Land Records
+            </button>
+
+            <button onclick="location.href='search-history.html'">
+                View Search History
+            </button>
+        </section>
+
+        <section class="cards">
+            <div class="card">
+                <h3>Total Searches</h3>
+                <p class="number" id="totalSearches">—</p>
+            </div>
+
+            <div class="card">
+                <h3>Records Found</h3>
+                <p class="number" id="recordsFound">—</p>
+            </div>
+
+            <div class="card">
+                <h3>Records Not Found</h3>
+                <p class="number" id="recordsNotFound">—</p>
+            </div>
+
+            <div class="card">
+                <h3>Recent Activity</h3>
+                <p id="recentCount">Loading...</p>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Recent Searches</h2>
+
+            <p id="recentMessage">Loading search history...</p>
+
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Survey Number</th>
+                            <th>Village</th>
+                            <th>Result</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentSearches"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        Academic Demo Project — Not an Official Government Verification Portal
+    </footer>
+
+    <script>
+        async function loadDashboard() {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            document.getElementById("welcomeMessage").textContent =
+                "Welcome, " + (localStorage.getItem("username") || "User") + "!";
+
+            try {
+                const response = await fetch(
+                    "http://localhost:5000/api/search-history",
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (response.status === 401) {
+                    document.getElementById("recentMessage").textContent =
+                        "Session expired. Please login again.";
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || "Unable to load history");
+                }
+
+                const history = data.history || [];
+
+                const found = history.filter(item =>
+                    item.result_found === true ||
+                    item.result_found === 1 ||
+                    item.result_found === "1"
+                ).length;
+
+                const notFound = history.length - found;
+
+                document.getElementById("totalSearches").textContent =
+                    history.length;
+
+                document.getElementById("recordsFound").textContent =
+                    found;
+
+                document.getElementById("recordsNotFound").textContent =
+                    notFound;
+
+                document.getElementById("recentCount").textContent =
+                    history.length + " searches recorded";
+
+                const tbody = document.getElementById("recentSearches");
+                tbody.replaceChildren();
+
+                if (history.length === 0) {
+                    document.getElementById("recentMessage").textContent =
+                        "No searches yet. Start by searching for a land record.";
+                    return;
+                }
+
+                document.getElementById("recentMessage").textContent =
+                    "Showing your latest 5 searches.";
+
+                history.slice(0, 5).forEach(item => {
+                    const row = document.createElement("tr");
+
+                    const values = [
+                        item.survey_number || "N/A",
+                        item.village || "N/A",
+                        (
+                            item.result_found === true ||
+                            item.result_found === 1 ||
+                            item.result_found === "1"
+                        ) ? "Record Found" : "No Record Found",
+                        item.searched_at
+                            ? new Date(item.searched_at).toLocaleString()
+                            : "N/A"
+                    ];
+
+                    values.forEach(value => {
+                        const cell = document.createElement("td");
+                        cell.textContent = value;
+                        row.appendChild(cell);
+                    });
+
+                    tbody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error("Dashboard error:", error);
+
+                document.getElementById("recentMessage").textContent =
+                    "Unable to load dashboard data. Check the backend and login.";
+            }
+        }
+
+        function logoutUser() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("username");
+        localStorage.removeItem("role");
+        localStorage.removeItem("loggedIn");
+
+        window.location.href = "login.html";
+    }
+        loadDashboard();
+    </script>
+</body>
+</html>

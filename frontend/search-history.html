@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search History</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f6f9;
+        }
+
+        h1 {
+            color: #073763;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ccc;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #0756a5;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f6fb;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        a {
+            color: #0756a5;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Search History / தேடல் வரலாறு</h1>
+
+    <p><a href="search.html">← Back to Land Search</a></p>
+
+    <div class="container">
+        <p id="message" class="message">Loading search history...</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>District</th>
+                    <th>Taluk</th>
+                    <th>Village</th>
+                    <th>Survey Number</th>
+                    <th>Result</th>
+                    <th>Search Date</th>
+                </tr>
+            </thead>
+
+            <tbody id="historyBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        async function loadSearchHistory() {
+            const token = localStorage.getItem("token");
+            const message = document.getElementById("message");
+            const historyBody = document.getElementById("historyBody");
+
+            if (!token) {
+                message.textContent = "Please login to view search history.";
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    "http://localhost:5000/api/search-history",
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+
+                const data = await response.json();
+
+                if (response.status === 401) {
+                    message.textContent = "Session expired. Please login again.";
+                    return;
+                }
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || "Unable to load history");
+                }
+
+                historyBody.replaceChildren();
+
+                if (data.history.length === 0) {
+                    message.textContent = "No search history found.";
+                    return;
+                }
+
+                data.history.forEach(item => {
+                    const row = document.createElement("tr");
+
+                    const values = [
+                        item.district,
+                        item.taluk,
+                        item.village,
+                        item.survey_number,
+                        item.result_found ? "Record Found" : "No Record Found",
+                        item.searched_at
+                            ? new Date(item.searched_at).toLocaleString()
+                            : "N/A"
+                    ];
+
+                    values.forEach(value => {
+                        const cell = document.createElement("td");
+                        cell.textContent = value ?? "N/A";
+                        row.appendChild(cell);
+                    });
+
+                    historyBody.appendChild(row);
+                });
+
+                message.textContent =
+                    `Total searches: ${data.history.length}`;
+
+            } catch (error) {
+                console.error("History loading error:", error);
+                message.textContent = "Unable to load search history.";
+            }
+        }
+
+        loadSearchHistory();
+    </script>
+</body>
+</html>

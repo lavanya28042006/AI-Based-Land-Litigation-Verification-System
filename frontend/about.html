@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About LandVerify | செயலியைப் பற்றி</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, "Noto Sans Tamil", sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            line-height: 1.8;
+        }
+
+        header {
+            background: #0b2f55;
+            color: white;
+            padding: 25px 30px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        header p {
+            margin-bottom: 0;
+        }
+
+        nav {
+            background: #0756a5;
+            padding: 15px 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 25px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #0000000d;
+        }
+
+        h2 {
+            color: #0756a5;
+            margin-top: 0;
+            line-height: 1.5;
+        }
+
+        .english {
+            margin-bottom: 10px;
+        }
+
+        .tamil {
+            color: #475569;
+            margin-top: 8px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .feature {
+            background: #f8fafc;
+            border-left: 4px solid #0756a5;
+            padding: 18px;
+            border-radius: 7px;
+        }
+
+        .feature h3 {
+            margin-top: 0;
+            color: #123f70;
+        }
+
+        .tech-list li {
+            margin-bottom: 8px;
+        }
+
+        .disclaimer {
+            border-left: 5px solid #d97706;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+
+        @media (max-width: 650px) {
+            main {
+                padding: 15px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>About LandVerify / LandVerify பற்றி</h1>
+
+    <p>
+        AI-Powered Land Litigation Verification System
+        <br>
+        AI உதவியுடன் நில வழக்கு விவரங்களைச் சரிபார்க்கும் அமைப்பு
+    </p>
+</header>
+
+<nav>
+    <a href="dashboard.html">Dashboard / முகப்புப் பலகை</a>
+    <a href="search.html">Search Land / நிலத் தேடல்</a>
+    <a href="search-history.html">Search History / தேடல் வரலாறு</a>
+    <a href="about.html">About the App / செயலியைப் பற்றி</a>
+    <a href="index.html">Home / முகப்பு</a>
+</nav>
+
+<main>
+
+    <section class="section">
+        <h2>1. About the Project / திட்டத்தைப் பற்றி</h2>
+
+        <p class="english">
+            LandVerify is an academic demonstration project that allows
+            users to search available land records using details such as
+            district, village and survey number.
+        </p>
+
+        <p class="tamil">
+            LandVerify என்பது கல்வி நோக்கத்திற்காக உருவாக்கப்பட்ட
+            செயல்முறை விளக்கத் திட்டமாகும். மாவட்டம், கிராமம் மற்றும்
+            சர்வே எண் போன்ற விவரங்களைப் பயன்படுத்தி கிடைக்கக்கூடிய
+            நிலப் பதிவுகளைத் தேட இது உதவுகிறது.
+        </p>
+    </section>
+
+    <section class="section">
+        <h2>2. Project Objectives / திட்டத்தின் நோக்கங்கள்</h2>
+
+        <ul>
+            <li>
+                <strong>Easy Land Search:</strong>
+                Provide a simple interface to search land records.
+                <p class="tamil">
+                    <strong>எளிய நிலத் தேடல்:</strong>
+                    நிலப் பதிவுகளை எளிதாகத் தேடுவதற்கான வசதியை வழங்குதல்.
+                </p>
+            </li>
+
+            <li>
+                <strong>Case Information:</strong>
+                Display available land and case-related information.
+                <p class="tamil">
+                    <strong>வழக்கு விவரங்கள்:</strong>
+                    கிடைக்கக்கூடிய நிலம் மற்றும் வழக்கு தொடர்பான தகவல்களைக் காட்டுதல்.
+                </p>
+            </li>
+
+            <li>
+                <strong>Search History:</strong>
+                Save and review searches associated with the logged-in account.
+                <p class="tamil">
+                    <strong>தேடல் வரலாறு:</strong>
+                    உள்நுழைந்த பயனரின் தேடல்களைச் சேமித்து மீண்டும் பார்வையிடுதல்.
+                </p>
+            </li>
+
+            <li>
+                <strong>PDF Report:</strong>
+                Download a report of the displayed search result.
+                <p class="tamil">
+                    <strong>PDF அறிக்கை:</strong>
+                    திரையில் காட்டப்படும் தேடல் முடிவின் அறிக்கையைப் பதிவிறக்கம் செய்தல்.
+                </p>
+            </li>
+
+            <li>
+                <strong>AI Assistance:</strong>
+                Provide an AI-assisted explanation based on submitted information.
+                <p class="tamil">
+                    <strong>AI உதவி:</strong>
+                    வழங்கப்பட்ட தகவல்களின் அடிப்படையில் AI மூலம் விளக்கத்தைப் பெறுதல்.
+                </p>
+            </li>
+        </ul>
+    </section>
+
+    <section class="section">
+        <h2>3. Key Features / முக்கிய அம்சங்கள்</h2>
+
+        <div class="features">
+
+            <div class="feature">
+                <h3>Land Search / நிலத் தேடல்</h3>
+                <p class="english">
+                    Search available land records using location and survey details.
+                </p>
+                <p class="tamil">
+                    இட விவரங்கள் மற்றும் சர்வே எண்ணைப் பயன்படுத்தி
+                    கிடைக்கக்கூடிய நிலப் பதிவுகளைத் தேடலாம்.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>User Dashboard / பயனர் முகப்புப் பலகை</h3>
+                <p class="english">
+                    View search statistics and recent search activity.
+                </p>
+                <p class="tamil">
+                    தேடல்களின் எண்ணிக்கை மற்றும் சமீபத்திய தேடல்
+                    விவரங்களைப் பார்க்கலாம்.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>Search History / தேடல் வரலாறு</h3>
+                <p class="english">
+                    Review previous searches saved for your account.
+                </p>
+                <p class="tamil">
+                    உங்கள் கணக்கில் சேமிக்கப்பட்ட முந்தைய தேடல்களைப்
+                    பார்வையிடலாம்.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>PDF Report / PDF அறிக்கை</h3>
+                <p class="english">
+                    Download a report containing the displayed land details.
+                </p>
+                <p class="tamil">
+                    திரையில் காட்டப்படும் நில விவரங்களைக் கொண்ட
+                    அறிக்கையைப் பதிவிறக்கம் செய்யலாம்.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>AI Assistance / AI உதவி</h3>
+                <p class="english">
+                    Obtain an AI-generated explanation based on submitted data.
+                </p>
+                <p class="tamil">
+                    வழங்கப்பட்ட தரவுகளின் அடிப்படையில் AI உருவாக்கும்
+                    விளக்கத்தைப் பெறலாம்.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>Role-Based Access / பயனர் பங்கு அடிப்படையிலான அணுகல்</h3>
+                <p class="english">
+                    Restrict protected administrative actions according to user role.
+                </p>
+                <p class="tamil">
+                    பயனர் பங்கின் அடிப்படையில் நிர்வாகச் செயல்களுக்கான
+                    அணுகலைக் கட்டுப்படுத்தலாம்.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>4. Technology Stack / பயன்படுத்தப்பட்ட தொழில்நுட்பங்கள்</h2>
+
+        <ul class="tech-list">
+            <li>
+                <strong>Frontend:</strong> HTML, CSS, Vanilla JavaScript
+                <p class="tamil">பயனர் இடைமுகம் உருவாக்கப் பயன்படும் தொழில்நுட்பங்கள்.</p>
+            </li>
+
+            <li>
+                <strong>Backend:</strong> Node.js and Express.js
+                <p class="tamil">சர்வர் மற்றும் API செயல்பாடுகளுக்குப் பயன்படும் தொழில்நுட்பங்கள்.</p>
+            </li>
+
+            <li>
+                <strong>Database:</strong> MySQL
+                <p class="tamil">நிலப் பதிவுகள், பயனர் விவரங்கள் மற்றும் தேடல் வரலாற்றைச் சேமிக்கிறது.</p>
+            </li>
+
+            <li>
+                <strong>Authentication:</strong> JSON Web Token (JWT)
+                <p class="tamil">உள்நுழைவு அடிப்படையிலான API அணுகலைக் கட்டுப்படுத்த உதவுகிறது.</p>
+            </li>
+
+            <li>
+                <strong>AI Integration:</strong> OpenRouter API
+                <p class="tamil">வழங்கப்பட்ட தகவல்களுக்கு AI மூலம் விளக்கம் பெறப் பயன்படுகிறது.</p>
+            </li>
+        </ul>
+    </section>
+
+    <section class="section disclaimer">
+        <h2>5. Important Disclaimer / முக்கிய அறிவிப்பு</h2>
+
+        <p class="english">
+            This is an academic demonstration project. The sample data
+            and AI-generated responses are not official government records
+            or legal advice. A search result alone cannot prove that a
+            property is free from litigation. Please verify property details
+            using appropriate official records and qualified professionals.
+        </p>
+
+        <p class="tamil">
+            இது கல்வி நோக்கத்திற்காக உருவாக்கப்பட்ட செயல்முறை விளக்கத் திட்டமாகும்.
+            இதில் உள்ள மாதிரித் தரவுகளும் AI உருவாக்கும் பதில்களும்
+            அதிகாரப்பூர்வ அரசு பதிவுகளோ சட்ட ஆலோசனையோ அல்ல.
+            தேடல் முடிவு மட்டும் ஒரு நிலத்தில் வழக்கு இல்லை என்பதை
+            உறுதிப்படுத்தாது. சம்பந்தப்பட்ட அதிகாரப்பூர்வ பதிவுகள் மற்றும்
+            தகுதியான நிபுணர்கள் மூலம் நில விவரங்களைச் சரிபார்க்கவும்.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    LandVerify — Academic Demonstration Project
+    <br>
+    LandVerify — கல்வி நோக்கத்திற்கான செயல்முறை விளக்கத் திட்டம்
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>AI Risk Analysis</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<h1>
+
+AI Land Risk Analysis
+
+<br>
+
+AI நில அபாய பகுப்பாய்வு
+
+</h1>
+
+</header>
+
+<nav>
+
+<a href="index.html">Home / முகப்பு</a>
+
+<a href="search.html">Search / தேடல்</a>
+
+<a href="court-status.html">Court Status</a>
+
+<a href="admin.html">Admin</a>
+
+</nav>
+
+<div class="container">
+
+<h2>
+
+AI Analysis
+
+/
+
+AI பகுப்பாய்வு
+
+</h2>
+
+<label>
+
+Survey Number
+
+</label>
+
+<input
+type="text"
+id="survey"
+placeholder="Enter Survey Number">
+
+<button onclick="analyzeLand()">
+
+Analyze
+
+</button>
+
+<div id="aiReport" class="ai-report" style="display:none;">
+
+    <h2>🤖 AI Litigation Analysis Report</h2>
+
+    <div class="risk-card">
+        <h3>Risk Level</h3>
+        <span id="riskBadge" class="risk-badge">LOW</span>
+    </div>
+
+    <div class="report-card">
+        <h3>📄 Reason</h3>
+        <p id="reasonText"></p>
+    </div>
+
+    <div class="report-card">
+        <h3>💡 Recommendation</h3>
+        <p id="recommendationText"></p>
+    </div>
+
+    <div class="report-card">
+        <h3>📊 AI Confidence</h3>
+
+        <div class="progress">
+            <div id="confidenceBar" class="progress-bar"></div>
+        </div>
+
+        <p id="confidenceText">96%</p>
+    </div>
+
+    <div class="footer-report">
+        <p><b>Generated:</b> <span id="generatedTime"></span></p>
+        <p><b>AI Engine:</b> Land Litigation AI</p>
+    </div>
+
+</div>
+
+</div>
+
+<script src="js/ai-analysis.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>
+            Admin Panel / நிர்வாக குழு
+        </h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Home / முகப்பு</a>
+        <a href="admin.html">Admin / நிர்வாகம்</a>
+    </nav>
+
+    <div class="container">
+        <h2>Add Land Record / நில பதிவு சேர்க்க</h2>
+
+        <input type="text" id="district" placeholder="District / மாவட்டம்">
+        <input
+    type="text"
+    id="taluk"
+    placeholder="Taluk"
+    required
+/>
+        <input type="text" id="village" placeholder="Village / கிராமம்">
+        <input type="text" id="survey" placeholder="Survey Number / சர்வே எண்">
+        <input type="text" id="owner" placeholder="Owner Name / உரிமையாளர்">
+        <input type="text" id="patta" placeholder="Patta Number / பட்டா எண்">
+        <input type="text" id="area" placeholder="Land Area / நில அளவு">
+       <input
+    type="text"
+    id="landType"
+    placeholder="Land Type (Agricultural / Residential)"
+    required
+/>
+
+        <button onclick="addRecord()">
+            Add Record / பதிவு சேர்க்க
+        </button>
+
+        <div id="message"></div>
+    </div>
+
+    <script src="js/admin.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Land Litigation Verification System</title>
+    <link rel="stylesheet" href="style1.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<style>
+    :root {
+    --primary-blue: #0b1f38;
+    --secondary-blue: #1a365d;
+    --accent-blue: #3182ce;
+    --glow-color: #63b3ed;
+    --text-primary: #ffffff;
+    --text-secondary: #e2e8f0;
+    --glass-bg: rgba(11, 31, 56, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-shadow: rgba(0, 0, 0, 0.5);
+    --input-bg: rgba(26, 54, 93, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--primary-blue);
+}
+
+.background-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-image: url('./assets/land-bg1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    z-index: -2;
+
+    filter: brightness(0.85);
+}
+
+#particles-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 480px;
+    padding: 20px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.glass-card {
+    background: rgba(10, 25, 47, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 40px;
+    width: 100%;
+    box-shadow: 0 25px 50px -12px var(--glass-shadow), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    transform: translateY(0);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    animation: shine 8s infinite;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px -15px var(--glass-shadow),
+                0 0 20px rgba(99, 179, 237, 0.2);
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.icon-container {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(49, 130, 206, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.icon-container::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--glow-color);
+    animation: pulseGlow 2s infinite alternate;
+}
+
+.security-icon {
+    font-size: 28px;
+    color: white;
+    position: absolute;
+    z-index: 2;
+}
+
+.ai-icon {
+    font-size: 14px;
+    color: var(--glow-color);
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    z-index: 3;
+    background: var(--primary-blue);
+    border-radius: 50%;
+    padding: 3px;
+}
+
+.project-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(to right, #ffffff, var(--glow-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.tamil-subtitle {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 16px;
+    transition: color 0.3s ease;
+    z-index: 2;
+}
+
+.input-group input, 
+.input-group select {
+    width: 100%;
+    padding: 16px 16px 16px 45px;
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: all 0.3s ease;
+    appearance: none;
+    position: relative;
+    z-index: 1;
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.input-group select {
+    cursor: pointer;
+}
+
+.input-group select option {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+/* Custom dropdown arrow for select */
+.dropdown-group::after {
+    content: '\f0d7';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    cursor: pointer;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+    color: white;
+}
+
+.focus-border {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--glow-color);
+    transition: all 0.4s ease;
+    transform: translateX(-50%);
+    z-index: 2;
+    border-radius: 0 0 12px 12px;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: rgba(99, 179, 237, 0.5);
+    background: rgba(26, 54, 93, 0.8);
+    box-shadow: 0 0 15px rgba(49, 130, 206, 0.2);
+}
+
+.input-group input:focus ~ .input-icon,
+.input-group select:focus ~ .input-icon {
+    color: var(--glow-color);
+}
+
+.input-group input:focus ~ .focus-border,
+.input-group select:focus ~ .focus-border {
+    width: calc(100% - 2px); /* adjust for border */
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    position: relative;
+    padding-left: 25px;
+    user-select: none;
+}
+
+.remember-me input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 16px;
+    width: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.remember-me:hover input ~ .checkmark {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.remember-me input:checked ~ .checkmark {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.remember-me input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.forgot-password {
+    color: var(--glow-color);
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: white;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.login-btn {
+    background: linear-gradient(90deg, var(--accent-blue), var(--secondary-blue));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(49, 130, 206, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(49, 130, 206, 0.6);
+}
+
+.login-btn:hover::before {
+    left: 100%;
+}
+
+.login-btn:active {
+    transform: translateY(1px);
+}
+
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.5px;
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+.footer i {
+    color: var(--glow-color);
+    margin-right: 5px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    from {
+        box-shadow: 0 0 10px rgba(49, 130, 206, 0.5);
+    }
+    to {
+        box-shadow: 0 0 25px rgba(99, 179, 237, 0.8);
+    }
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .glass-card {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+    
+    .project-title {
+        font-size: 18px;
+    }
+    
+    .tamil-subtitle {
+        font-size: 12px;
+    }
+    
+    .icon-container {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .security-icon {
+        font-size: 24px;
+    }
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #8bd3ff;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.register-link a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+
+</style>
+<body>
+    <div class="background-container"></div>
+    <div class="particles" id="particles-js"></div>
+    
+    <div class="login-container">
+        <div class="glass-card">
+            <div class="card-header">
+                <div class="icon-container">
+                    <i class="fa-solid fa-shield-halved security-icon"></i>
+                    <i class="fa-solid fa-network-wired ai-icon"></i>
+                </div>
+                <h1 class="project-title">AI-Powered Land Litigation<br>Verification System</h1>
+                <h2 class="tamil-subtitle">AI மூலம் நில வழக்கு சரிபார்ப்பு அமைப்பு</h2>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-user input-icon"></i>
+                    <input type="text" id="username" placeholder="Username" required autocomplete="username">
+                    <div class="focus-border"></div>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+                    <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+                    <div class="focus-border"></div>
+                </div>
+                
+                <div class="input-group dropdown-group">
+                    <i class="fa-solid fa-id-badge input-icon"></i>
+                    <select id="role" required>
+                        <option value="" disabled selected>Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                    </select>
+                    <div class="focus-border"></div>
+                </div>
+                
+                <div class="form-actions">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <span>Secure Login</span>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </button>
+                
+<p class="register-link">
+    Don't have an account?
+    <a href="register.html">Register here / பதிவு செய்ய</a>
+</p>
+
+            </form>
+        </div>
+        
+        <div class="footer">
+            <p><i class="fa-solid fa-microchip"></i> Powered by AI, NLP & Risk Prediction</p>
+        </div>
+    </div>
+
+    <!-- Particles.js for interactive background effect -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    // Password Toggle Functionality
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function() {
+            // Toggle the type attribute
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Toggle the eye icon
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    }
+
+    // Add subtle interactive effect to the card based on mouse movement
+    const card = document.querySelector('.glass-card');
+    
+    if (card && window.matchMedia("(hover: hover)").matches) {
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
+            
+            // Limit the rotation so it doesn't get too extreme
+            const clampedX = Math.max(-5, Math.min(5, xAxis));
+            const clampedY = Math.max(-5, Math.min(5, yAxis));
+            
+            // Apply a very subtle rotation for 3D effect without distorting inputs
+            card.style.transform = `perspective(1000px) rotateY(${clampedX}deg) rotateX(${clampedY}deg) translateY(-5px)`;
+        });
+        
+        // Reset transform when mouse leaves
+        document.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0)`;
+        });
+    }
+
+    // Initialize particles.js for high-tech background
+    // We use a safe check in case the CDN fails to load
+    if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 60,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#63b3ed"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#3182ce",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1.5,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 0.8
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    }
+
+    // Form submission handling (prevent default for demo purposes)
+    const loginForm = document.getElementById('loginForm');
+
+    if (loginForm) {
+
+         
+    loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    const loginButton = loginForm.querySelector('button[type="submit"]');
+
+    try {
+        loginButton.disabled = true;
+
+        const response = await fetch("http://localhost:5000/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username,
+                password
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            alert(data.message || "Login failed");
+            return;
+        }
+
+        if (!data.user || !data.user.role || !data.user.id) {
+            alert("Login response is missing user information. Please check the backend.");
+            return;
+        }
+
+        // Store basic user information for the frontend.
+        // This is NOT a replacement for backend authorization.
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("userId", String(data.user.id));
+        localStorage.setItem("username", data.user.username);
+        localStorage.setItem("role", data.user.role);
+        localStorage.setItem("token", data.token);
+        
+        alert("Login successful!");
+
+        window.location.href = "index.html";
+
+    } catch (error) {
+        console.error("Login error:", error);
+        alert("Unable to connect to the server. Please try again.");
+    } finally {
+        loginButton.disabled = false;
+    }
+});
+
+
+    }
+});
+
+</script>
+</body>
+</html>
+

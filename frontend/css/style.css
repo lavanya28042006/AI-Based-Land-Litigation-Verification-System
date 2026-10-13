@@ -1,0 +1,404 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+/* SEARCH PAGE HEADER */
+
+header {
+    background: #003366;
+    color: white;
+    text-align: center;
+    padding: 25px 20px;
+}
+
+header h1 {
+    margin: 0;
+    color: white;
+    font-size: 32px;
+    line-height: 1.5;
+}
+
+
+nav {
+    background-color: #0055aa;
+    padding: 15px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    width: 90%;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px gray;
+}
+
+h2 {
+    color: #003366;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px 30px;
+    background-color: #0055aa;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+button:hover {
+    background-color: #003366;
+}
+
+#result {
+    margin-top: 30px;
+    padding: 20px;
+    background: #eef5ff;
+    border-left: 5px solid #003366;
+}
+
+#printBtn {
+    margin-top: 20px;
+    background: #006400;
+}
+
+@media print {
+    button,
+    nav,
+    input {
+        display: none;
+    }
+
+    body {
+        background: white;
+    }
+
+    #result {
+        border: 2px solid black;
+        padding: 20px;
+    }
+}
+
+.safe-badge {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 6px solid #28a745;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.ai-btn{
+    background:#0b5ed7;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:15px;
+    font-size:16px;
+}
+
+.ai-btn:hover{
+    background:#084298;
+}
+
+.ai-box{
+    margin-top:20px;
+    background:#f4f8ff;
+    border-left:5px solid #0b5ed7;
+    padding:15px;
+    border-radius:10px;
+}
+
+.ai-box h3{
+    color:#0b5ed7;
+}
+
+.ai-result-text{
+    font-size:16px;
+    line-height:1.8;
+    color:#222;
+}
+
+.loading-box{
+    text-align:center;
+    padding:30px;
+}
+
+.loader{
+    width:60px;
+    height:60px;
+    border:6px solid #ddd;
+    border-top:6px solid #0d6efd;
+    border-radius:50%;
+    margin:auto;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+/* Result Table */
+
+.result-table{
+    width:100%;
+    border-collapse:collapse;
+    margin:20px 0;
+    background:#ffffff;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.result-table tr:nth-child(even){
+    background:#f8fbff;
+}
+
+.result-table td{
+    padding:15px;
+    border:1px solid #ddd;
+    font-size:18px;
+}
+
+.result-table td:first-child{
+    width:45%;
+    font-weight:bold;
+    color:#003366;
+}
+
+.verify-box{
+    margin-top:25px;
+    background:#fff;
+    border:2px solid #0b5ed7;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.verify-box h3{
+    color:#0b5ed7;
+    margin-bottom:15px;
+}
+
+.verify-box p{
+    margin:10px 0;
+    font-size:17px;
+}
+
+.verified{
+    color:green;
+    font-weight:bold;
+}
+
+.report-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.gov-name{
+color:#555;
+font-size:15px;
+margin-top:8px;
+}
+
+.qr-code{
+width:110px;
+height:110px;
+border:2px solid #ccc;
+padding:5px;
+background:white;
+}
+
+/* ===== AI REPORT ===== */
+
+.ai-report{
+    margin-top:30px;
+    background:#ffffff;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 8px 25px rgba(0,0,0,.15);
+}
+
+.ai-report h2{
+    color:#003366;
+    margin-bottom:25px;
+}
+
+.risk-card{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.risk-badge{
+    display:inline-block;
+    padding:12px 35px;
+    border-radius:30px;
+    font-size:22px;
+    font-weight:bold;
+    color:white;
+}
+
+.low{
+    background:#28a745;
+}
+
+.medium{
+    background:#ffc107;
+    color:#000;
+}
+
+.high{
+    background:#dc3545;
+}
+
+.report-card{
+    margin:20px 0;
+    padding:20px;
+    background:#f7f9fc;
+    border-left:6px solid #0055aa;
+    border-radius:10px;
+}
+
+.progress{
+    width:100%;
+    height:22px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#28a745;
+    transition:0.5s;
+}
+
+.footer-report{
+    margin-top:30px;
+    border-top:1px solid #ddd;
+    padding-top:20px;
+}
+/* Navbar */
+.main-navbar {
+    background: #0756a5;
+    min-height: 60px;
+    padding: 10px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-link {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Menu icon */
+.menu-container {
+    position: relative;
+}
+
+.menu-btn {
+    background: white;
+    border: none;
+    border-radius: 6px;
+    width: 45px;
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.menu-btn span {
+    width: 23px;
+    height: 3px;
+    background: #0756a5;
+    border-radius: 3px;
+}
+
+/* Dropdown menu */
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    width: 270px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    z-index: 1000;
+}
+
+.menu-dropdown.show {
+    display: block;
+}
+
+.menu-dropdown a {
+    display: block;
+    padding: 13px 12px;
+    color: #123456;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.menu-dropdown a:hover {
+    background: #e8f1ff;
+    color: #0756a5;
+}
+
+@media (max-width: 480px) {
+    .main-navbar {
+        padding: 10px 15px;
+    }
+
+    .menu-dropdown {
+        width: 250px;
+        max-width: calc(100vw - 30px);
+    }
+}
+
+
